@@ -1,0 +1,6 @@
+{
+  "parent": "gamepieces:block/chess/bishop",
+  "textures": {
+    "all": "minecraft:block/black_concrete"
+  }
+}

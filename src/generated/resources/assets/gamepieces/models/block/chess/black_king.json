@@ -1,0 +1,6 @@
+{
+  "parent": "gamepieces:block/chess/king",
+  "textures": {
+    "all": "minecraft:block/black_concrete"
+  }
+}

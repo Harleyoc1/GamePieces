@@ -1,0 +1,6 @@
+{
+  "parent": "gamepieces:block/chess/rook",
+  "textures": {
+    "all": "minecraft:block/white_concrete"
+  }
+}

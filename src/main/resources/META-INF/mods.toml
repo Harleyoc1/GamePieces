@@ -1,0 +1,31 @@
+license = "MIT"
+modLoader = "javafml"
+loaderVersion = "[36,37)"
+issueTrackerURL = "https://github.com/Harleyoc1/GamePieces/issues"
+
+[[mods]]
+modId = "gamepieces"
+version = "${file.jarVersion}"
+displayName = "Game Pieces"
+# updateJSONURL="TODO"
+displayURL = "https://www.curseforge.com/minecraft/mc-mods/game-pieces"
+logoFile = "logo.png"
+credits = "Ferreusveritas for the models and initial implementation in Cathedral 1.12.2"
+authors = "Harley O'Connor"
+description = '''
+Adds board game pieces, including chess and checkers pieces.
+'''
+
+[[dependencies.gamepieces]]
+    modId = "forge"
+    mandatory = true
+    versionRange = "[36.2.34,37)"
+    ordering = "NONE"
+    side = "BOTH"
+
+[[dependencies.gamepieces]]
+    modId = "minecraft"
+    mandatory = true
+    versionRange = "[1.16.5,1.17)"
+    ordering = "NONE"
+    side = "BOTH"

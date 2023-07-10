@@ -1,0 +1,4 @@
+{
+  "commands.gamepieces.setchessblock.failed": "Could not set chess piece",
+  "commands.gamepieces.setchessblock.success": "Set chess piece at %s, %s, %s"
+}
