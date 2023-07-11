@@ -1,15 +1,15 @@
 package com.harleyoconnor.gamepieces.block;
 
-public class ChessPieceData extends PieceData<ChessPiece> {
+public class CheckersPieceData extends PieceData<CheckersPiece> {
 
-    public ChessPieceData() {
-        super(new ChessPiece[4], ChessPiece.EMPTY);
+    public CheckersPieceData() {
+        super(new CheckersPiece[4], CheckersPiece.EMPTY);
     }
 
     @Override
     public void setFromRaw(int raw) {
         for (int i = 0; i < 4; i++) {
-            pieces[i] = ChessPiece.fromNybble((byte) ((raw >> (i * 4)) & 0xf));
+            pieces[i] = CheckersPiece.fromRaw((byte) ((raw >> (i * 3)) & 0x7));
         }
     }
 
@@ -17,9 +17,8 @@ public class ChessPieceData extends PieceData<ChessPiece> {
     public int toRaw() {
         int raw = 0;
         for (int i = 0; i < 4; i++) {
-            raw |= pieces[i].toNybble() << (i * 4);
+            raw |= pieces[i].toRaw() << (i * 3);
         }
         return raw;
     }
-
 }

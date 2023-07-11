@@ -10,7 +10,9 @@ public class GamePiecesCommands {
 
     public static void register(CommandDispatcher<CommandSource> dispatcher) {
         LiteralCommandNode<CommandSource> command = dispatcher.register(
-                Commands.literal(GamePieces.MOD_ID).then(SetChessPieceCommand.register(dispatcher))
+                Commands.literal(GamePieces.MOD_ID)
+                        .then(SetChessPieceCommand.register(dispatcher))
+                        .then(SetCheckersPieceCommand.register(dispatcher))
         );
 
         dispatcher.register(Commands.literal("gp").redirect(command));

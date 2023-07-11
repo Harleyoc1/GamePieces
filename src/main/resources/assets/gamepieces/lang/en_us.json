@@ -1,4 +1,6 @@
 {
-  "commands.gamepieces.setchessblock.failed": "Could not set chess piece",
-  "commands.gamepieces.setchessblock.success": "Set chess piece at %s, %s, %s"
+  "commands.gamepieces.setchesspiece.failed": "Could not set chess piece",
+  "commands.gamepieces.setchesspiece.success": "Set chess piece at %s, %s, %s",
+  "commands.gamepieces.setcheckerspiece.failed": "Could not set checkers piece",
+  "commands.gamepieces.setcheckerspiece.success": "Set checkers piece at %s, %s, %s"
 }

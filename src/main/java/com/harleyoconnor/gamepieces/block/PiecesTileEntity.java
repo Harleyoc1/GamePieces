@@ -6,21 +6,23 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 
 import javax.annotation.Nullable;
 
-public class ChessTileEntity extends TileEntity {
+public abstract class PiecesTileEntity<P extends Piece> extends TileEntity {
 
     public static final String PIECES_KEY = "pieces";
 
-    private final ChessPieceData data = new ChessPieceData();
+    private final PieceData<P> pieces;
 
-    public ChessTileEntity() {
-        super(Registry.CHESS_TILE_ENTITY.get());
+    public PiecesTileEntity(TileEntityType<?> tileEntityType, PieceData<P> pieces) {
+        super(tileEntityType);
+        this.pieces = pieces;
     }
 
-    public ChessPieceData getData() {
-        return data;
+    public PieceData<P> getPieces() {
+        return pieces;
     }
 
     @Override
@@ -32,7 +34,7 @@ public class ChessTileEntity extends TileEntity {
     @Override
     public CompoundNBT save(CompoundNBT tag) {
         super.save(tag);
-        tag.putInt(PIECES_KEY, data.toRaw());
+        tag.putInt(PIECES_KEY, pieces.toRaw());
         return tag;
     }
 
@@ -49,13 +51,25 @@ public class ChessTileEntity extends TileEntity {
 
     private void loadData(CompoundNBT tag) {
         if (tag.contains(PIECES_KEY)) {
-            data.setFromRaw(tag.getInt(PIECES_KEY));
+            pieces.setFromRaw(tag.getInt(PIECES_KEY));
         }
     }
 
     @Override
     public CompoundNBT getUpdateTag() {
         return save(new CompoundNBT());
+    }
+
+    public static final class Chess extends PiecesTileEntity<ChessPiece> {
+        public Chess() {
+            super(Registry.CHESS_TILE_ENTITY.get(), new ChessPieceData());
+        }
+    }
+
+    public static final class Checkers extends PiecesTileEntity<CheckersPiece> {
+        public Checkers() {
+            super(Registry.CHECKERS_TILE_ENTITY.get(), new CheckersPieceData());
+        }
     }
 
 }

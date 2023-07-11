@@ -1,8 +1,7 @@
 package com.harleyoconnor.gamepieces.setup;
 
 import com.harleyoconnor.gamepieces.GamePieces;
-import com.harleyoconnor.gamepieces.block.ChessBlock;
-import com.harleyoconnor.gamepieces.block.ChessTileEntity;
+import com.harleyoconnor.gamepieces.block.*;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
@@ -23,9 +22,12 @@ public class Registry {
         TILE_ENTITIES.register(modEventBus);
     }
 
-    public static final RegistryObject<ChessBlock> CHESS_BLOCK = BLOCKS.register("chess", ChessBlock::new);
+    public static final RegistryObject<PiecesBlock> CHESS_BLOCK = BLOCKS.register("chess", PiecesBlock.Chess::new);
+    public static final RegistryObject<PiecesBlock> CHECKERS_BLOCK = BLOCKS.register("checkers", PiecesBlock.Checkers::new);
 
-    public static final RegistryObject<TileEntityType<ChessTileEntity>> CHESS_TILE_ENTITY = TILE_ENTITIES.register("chess",
-            () -> TileEntityType.Builder.of(ChessTileEntity::new, CHESS_BLOCK.get()).build(null));
+    public static final RegistryObject<TileEntityType<PiecesTileEntity.Chess>> CHESS_TILE_ENTITY = TILE_ENTITIES.register("chess",
+            () -> TileEntityType.Builder.of(PiecesTileEntity.Chess::new, CHESS_BLOCK.get()).build(null));
+    public static final RegistryObject<TileEntityType<PiecesTileEntity.Checkers>> CHECKERS_TILE_ENTITY = TILE_ENTITIES.register("checkers",
+            () -> TileEntityType.Builder.of(PiecesTileEntity.Checkers::new, CHECKERS_BLOCK.get()).build(null));
 
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "gamepieces:block/checkers/man",
+  "textures": {
+    "all": "minecraft:block/white_concrete"
+  }
+}

@@ -1,17 +1,21 @@
 package com.harleyoconnor.gamepieces.setup;
 
-import com.harleyoconnor.gamepieces.GamePieces;
+import com.harleyoconnor.gamepieces.block.CheckersPiece;
 import com.harleyoconnor.gamepieces.block.ChessPiece;
-import com.harleyoconnor.gamepieces.render.ChessTileEntityRenderer;
+import com.harleyoconnor.gamepieces.block.PieceColor;
+import com.harleyoconnor.gamepieces.render.PieceModelManager;
+import com.harleyoconnor.gamepieces.render.PieceTileEntityRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 public class ClientSetup {
+
+    private static final PieceModelManager<ChessPiece> CHESS_MODEL_MANAGER = new PieceModelManager<>("chess", ChessPiece.Type.values(), PieceColor.values());
+    private static final PieceModelManager<CheckersPiece> CHECKERS_MODEL_MANAGER = new PieceModelManager<>("checkers", CheckersPiece.Type.values(), PieceColor.values());
 
     public static void setup(FMLClientSetupEvent event) {
         registerRenderLayers();
@@ -23,20 +27,22 @@ public class ClientSetup {
     }
 
     private static void registerTileEntityRenderers() {
-        ClientRegistry.bindTileEntityRenderer(Registry.CHESS_TILE_ENTITY.get(), ChessTileEntityRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(Registry.CHESS_TILE_ENTITY.get(), tileEntityRenderer -> new PieceTileEntityRenderer<>(
+                tileEntityRenderer, CHESS_MODEL_MANAGER
+        ));
+        ClientRegistry.bindTileEntityRenderer(Registry.CHECKERS_TILE_ENTITY.get(), tileEntityRenderer -> new PieceTileEntityRenderer<>(
+                tileEntityRenderer, CHECKERS_MODEL_MANAGER
+        ));
     }
 
     public static void onModelRegistry(ModelRegistryEvent event) {
-        for (ChessPiece.Man man : ChessPiece.Man.validValues()) {
-            String name = man.name().toLowerCase();
-            ModelLoader.addSpecialModel(GamePieces.location("block/chess/" + name));
-            ModelLoader.addSpecialModel(GamePieces.location("block/chess/white_" + name));
-            ModelLoader.addSpecialModel(GamePieces.location("block/chess/black_" + name));
-        }
+        CHESS_MODEL_MANAGER.addModels();
+        CHECKERS_MODEL_MANAGER.addModels();
     }
 
     public static void onModelBake(ModelBakeEvent event) {
-        ChessTileEntityRenderer.cacheModels();
+        CHESS_MODEL_MANAGER.cacheModels();
+        CHECKERS_MODEL_MANAGER.cacheModels();
     }
 
 }
