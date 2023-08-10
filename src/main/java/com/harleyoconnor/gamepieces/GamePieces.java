@@ -2,7 +2,7 @@ package com.harleyoconnor.gamepieces;
 
 import com.harleyoconnor.gamepieces.command.GamePiecesCommands;
 import com.harleyoconnor.gamepieces.setup.Registry;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.fml.common.Mod;

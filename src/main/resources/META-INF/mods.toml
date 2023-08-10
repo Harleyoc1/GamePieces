@@ -1,6 +1,6 @@
 license = "MIT"
 modLoader = "javafml"
-loaderVersion = "[36,37)"
+loaderVersion = "[40,41)"
 issueTrackerURL = "https://github.com/Harleyoc1/GamePieces/issues"
 
 [[mods]]
@@ -19,13 +19,13 @@ Adds board game pieces, including chess and checkers pieces.
 [[dependencies.gamepieces]]
     modId = "forge"
     mandatory = true
-    versionRange = "[36.2.34,37)"
+    versionRange = "[40.2.0,41)"
     ordering = "NONE"
     side = "BOTH"
 
 [[dependencies.gamepieces]]
     modId = "minecraft"
     mandatory = true
-    versionRange = "[1.16.5,1.17)"
+    versionRange = "[1.18.2,1.19)"
     ordering = "NONE"
     side = "BOTH"

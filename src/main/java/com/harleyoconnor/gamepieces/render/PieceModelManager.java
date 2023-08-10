@@ -5,9 +5,9 @@ import com.harleyoconnor.gamepieces.block.Piece;
 import com.harleyoconnor.gamepieces.block.PieceColor;
 import com.harleyoconnor.gamepieces.block.PieceType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ModelLoader;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.client.model.ForgeModelBakery;
 
 import java.util.stream.Stream;
 
@@ -16,20 +16,20 @@ public class PieceModelManager<P extends Piece> {
     private final String modelFolderName;
     private final PieceType[] types;
     private final PieceColor[] colors;
-    private final IBakedModel[] models;
+    private final BakedModel[] models;
 
     public PieceModelManager(String modelFolderName, PieceType[] types, PieceColor[] colors) {
         this.modelFolderName = modelFolderName;
         this.types = Stream.of(types).filter(PieceType::shouldRender).toArray(PieceType[]::new);
         this.colors = colors;
-        this.models = new IBakedModel[this.types.length * colors.length];
+        this.models = new BakedModel[this.types.length * colors.length];
     }
 
     public void addModels() {
         for (PieceType type : types) {
-            ModelLoader.addSpecialModel(getModelLocation(type));
+            ForgeModelBakery.addSpecialModel(getModelLocation(type));
             for (PieceColor color : colors) {
-                ModelLoader.addSpecialModel(getModelLocation(type, color));
+                ForgeModelBakery.addSpecialModel(getModelLocation(type, color));
             }
         }
     }
@@ -42,7 +42,7 @@ public class PieceModelManager<P extends Piece> {
         }
     }
     
-    private IBakedModel getModel(PieceType type, PieceColor color) {
+    private BakedModel getModel(PieceType type, PieceColor color) {
         return Minecraft.getInstance().getModelManager().getModel(getModelLocation(type, color));
     }
 
@@ -54,7 +54,7 @@ public class PieceModelManager<P extends Piece> {
         return GamePieces.location("block/" + modelFolderName + "/" + color.name().toLowerCase() + "_" + type.name().toLowerCase());
     }
 
-    public IBakedModel getModel(P piece) {
+    public BakedModel getModel(P piece) {
         return models[(piece.getType().ordinal() - 1) + (piece.getColor().ordinal() * types.length)];
     }
 

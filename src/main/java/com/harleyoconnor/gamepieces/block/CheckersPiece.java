@@ -1,11 +1,11 @@
 package com.harleyoconnor.gamepieces.block;
 
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
+import net.minecraft.util.StringRepresentable;
 
 public class CheckersPiece implements Piece {
 
-    public enum Type implements IStringSerializable, PieceType {
+    public enum Type implements StringRepresentable, PieceType {
         NONE,
         MAN,
         KING;
@@ -42,7 +42,7 @@ public class CheckersPiece implements Piece {
     }
 
     public static CheckersPiece fromRaw(byte data) {
-        return new CheckersPiece(CheckersPiece.Type.values()[MathHelper.clamp(data & 3, 0, 2)], PieceColor.values()[(data >> 2) & 1]);
+        return new CheckersPiece(CheckersPiece.Type.values()[Mth.clamp(data & 3, 0, 2)], PieceColor.values()[(data >> 2) & 1]);
     }
 
     public byte toRaw() {

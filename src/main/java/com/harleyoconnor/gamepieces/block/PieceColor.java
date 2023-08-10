@@ -1,8 +1,8 @@
 package com.harleyoconnor.gamepieces.block;
 
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.StringRepresentable;
 
-public enum PieceColor implements IStringSerializable {
+public enum PieceColor implements StringRepresentable {
     WHITE,
     BLACK;
 

@@ -3,13 +3,13 @@ package com.harleyoconnor.gamepieces.command;
 import com.harleyoconnor.gamepieces.GamePieces;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
 
 public class GamePiecesCommands {
 
-    public static void register(CommandDispatcher<CommandSource> dispatcher) {
-        LiteralCommandNode<CommandSource> command = dispatcher.register(
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+        LiteralCommandNode<CommandSourceStack> command = dispatcher.register(
                 Commands.literal(GamePieces.MOD_ID)
                         .then(SetChessPieceCommand.register(dispatcher))
                         .then(SetCheckersPieceCommand.register(dispatcher))

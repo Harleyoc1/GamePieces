@@ -107,11 +107,13 @@ dependencies {
     runtimeOnly(fg.deobf("org.squiddev:cc-tweaked-$mcVersion:${property("ccVersion")}"))
 
     runtimeOnly(fg.deobf("top.theillusivec4.curios:curios-forge:$mcVersion-${property("curiosVersion")}"))
-    runtimeOnly(fg.deobf("com.ferreusveritas.mcf:MagicCrackerFactory-1.16.5:${property("mcfVersion")}"))
+    compileOnly(fg.deobf("top.theillusivec4.curios:curios-forge:$mcVersion-${property("curiosVersion")}:api"))
 
-    runtimeOnly(fg.deobf("curse.maven:hwyla-253449:3033593"))
+    runtimeOnly(fg.deobf("com.ferreusveritas.mcf:MagicCrackerFactory-$mcVersion:${property("mcfVersion")}"))
+
+    implementation(fg.deobf("curse.maven:jade-324717:4575623"))
     runtimeOnly(fg.deobf("mezz.jei:jei-$mcVersion:${property("jeiVersion")}"))
-    runtimeOnly(fg.deobf("com.harleyoconnor.suggestionproviderfix:SuggestionProviderFix:$mcVersion-${property("suggestionProviderFixVersion")}"))
+    runtimeOnly(fg.deobf("com.harleyoconnor.suggestionproviderfix:SuggestionProviderFix-1.18.1:${property("suggestionProviderFixVersion")}"))
 }
 
 tasks.jar {
@@ -133,37 +135,34 @@ java {
     withSourcesJar()
 
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 
 curseforge {
-    if (project.hasProperty("curseApiKey") && project.hasProperty("curseFileType")) {
-        apiKey = property("curseApiKey")
+    if (!project.hasProperty("curseApiKey")) {
+       project.logger.warn("API Key for CurseForge not detected; uploading will be disabled.")
+    }
 
-        project {
-            id = "405502" // TODO: Update for GamePieces ID
+    apiKey = property("curseApiKey")
 
-            addGameVersion(mcVersion)
+    project {
+        id = "405502" // TODO: Update for GamePieces ID
 
-            changelog = "No changelog provided."
-            changelogType = "markdown"
-            releaseType = property("curseFileType")
+        addGameVersion(mcVersion)
 
-            addArtifact(tasks.findByName("sourcesJar"))
+        changelog = "No changelog provided."
+        changelogType = "markdown"
+        releaseType = optionalProperty("curseFileType") ?: "release"
 
-            mainArtifact(tasks.findByName("jar")) {
-                relations {
-                    optionalDependency("cc-tweaked")
-                    optionalDependency("magic-cracker-factory")
-                }
+        addArtifact(tasks.findByName("sourcesJar"))
+
+        mainArtifact(tasks.findByName("jar")) {
+            relations {
+                optionalDependency("cc-tweaked")
+                optionalDependency("magic-cracker-factory")
             }
         }
-    } else {
-        project.logger.log(
-            LogLevel.WARN,
-            "API Key and file type for CurseForge not detected; uploading will be disabled."
-        )
     }
 }
 

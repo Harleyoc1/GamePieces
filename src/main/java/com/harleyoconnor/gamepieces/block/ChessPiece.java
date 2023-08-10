@@ -1,13 +1,11 @@
 package com.harleyoconnor.gamepieces.block;
 
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.math.MathHelper;
-
-import java.util.Arrays;
+import net.minecraft.util.Mth;
+import net.minecraft.util.StringRepresentable;
 
 public class ChessPiece implements Piece {
 
-    public enum Type implements IStringSerializable, PieceType {
+    public enum Type implements StringRepresentable, PieceType {
         NONE,
         PAWN,
         ROOK,
@@ -49,7 +47,7 @@ public class ChessPiece implements Piece {
     }
 
     public static ChessPiece fromNybble(byte data) {
-        return new ChessPiece(Type.values()[MathHelper.clamp(data & 7, 0, 6)], PieceColor.values()[(data >> 3) & 1]);
+        return new ChessPiece(Type.values()[Mth.clamp(data & 7, 0, 6)], PieceColor.values()[(data >> 3) & 1]);
     }
 
     public byte toNybble() {
