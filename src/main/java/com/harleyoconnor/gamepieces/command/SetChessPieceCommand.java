@@ -32,8 +32,8 @@ public class SetChessPieceCommand implements Command<CommandSourceStack> {
         return Commands.literal("setchesspiece")
                 .requires(sender -> sender.hasPermission(2))
                 .then(Commands.argument("pos", ChessPiecePositionArgument.chessPiecePosition())
-                        .then(Commands.argument("piece", TYPE_ARGUMENT)
-                                .then(Commands.argument("col", COLOR_ARGUMENT).executes(INSTANCE))));
+                .then(Commands.argument("piece", TYPE_ARGUMENT)
+                .then(Commands.argument("col", COLOR_ARGUMENT).executes(INSTANCE))));
     }
 
     private SetChessPieceCommand() {
@@ -54,7 +54,7 @@ public class SetChessPieceCommand implements Command<CommandSourceStack> {
         }
         BlockEntity blockEntity = context.getSource().getLevel().getBlockEntity(blockPos);
         if (blockEntity instanceof PiecesBlockEntity.Chess) {
-            setPiece(context, Math.abs(pos.x - ((int) pos.x)) - 0.5, Math.abs(pos.z - ((int) pos.z)) - 0.5, ((PiecesBlockEntity.Chess) blockEntity).getPieces());
+            setPiece(context, pos.x, pos.z, ((PiecesBlockEntity.Chess) blockEntity).getPieces());
             context.getSource().getLevel().sendBlockUpdated(blockPos, oldState, newState, 2);
             context.getSource().sendSuccess(new TranslatableComponent("commands.gamepieces.setchesspiece.success", pos.x, pos.y, pos.z), true);
             return SINGLE_SUCCESS;
@@ -64,10 +64,14 @@ public class SetChessPieceCommand implements Command<CommandSourceStack> {
     }
 
     private void setPiece(CommandContext<CommandSourceStack> context, double subX, double subZ, PieceData<ChessPiece> pieces) {
-        int square = ((int) (((subX / -0.25) + 1) / 2) & 1) | ((int) ((subZ / 0.25) + 1) & 2);
+    	subX = ((subX % 1) + 1) % 1;
+    	subZ = ((subZ % 1) + 1) % 1;
+    	int x = (int)(subX * 2);
+    	int z = (int)(subZ * 2);
+        int square = z * 2 + (1 - x);
         pieces.setPiece(square, new ChessPiece(
-                context.getArgument("piece", ChessPiece.Type.class),
-                context.getArgument("col", PieceColor.class)
+            context.getArgument("piece", ChessPiece.Type.class),
+            context.getArgument("col", PieceColor.class)
         ));
     }
 

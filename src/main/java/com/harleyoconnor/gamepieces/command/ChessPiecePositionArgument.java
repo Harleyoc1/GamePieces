@@ -1,16 +1,18 @@
 package com.harleyoconnor.gamepieces.command;
 
-import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.suggestion.Suggestions;
-import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import net.minecraft.commands.SharedSuggestionProvider;
-import net.minecraft.commands.arguments.coordinates.Vec3Argument;
-
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
+
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.commands.SharedSuggestionProvider.TextCoordinates;
+import net.minecraft.commands.arguments.coordinates.Vec3Argument;
 
 public class ChessPiecePositionArgument extends Vec3Argument {
 
@@ -27,26 +29,25 @@ public class ChessPiecePositionArgument extends Vec3Argument {
         if (!(context.getSource() instanceof SharedSuggestionProvider)) {
             return Suggestions.empty();
         }
-        Collection<SharedSuggestionProvider.TextCoordinates> relevantCoordinates = ((SharedSuggestionProvider) context.getSource()).getRelevantCoordinates();
+        Collection<TextCoordinates> absoluteCoordinates = ((SharedSuggestionProvider)context.getSource()).getAbsoluteCoordinates();
         List<SharedSuggestionProvider.TextCoordinates> coordinates = new LinkedList<>();
-        for (SharedSuggestionProvider.TextCoordinates coordinate : relevantCoordinates) {
+        for (SharedSuggestionProvider.TextCoordinates coordinate : absoluteCoordinates) {
             processCoordinates(coordinate, coordinates);
         }
-
         return SharedSuggestionProvider.suggest(coordinates.stream().map(coords -> coords.x + " " + coords.y + " " + coords.z).collect(Collectors.toList()), builder);
     }
 
     private void processCoordinates(SharedSuggestionProvider.TextCoordinates coordinate, List<SharedSuggestionProvider.TextCoordinates> coordinates) {
         try {
-            int x = Integer.parseInt(coordinate.x);
-            int z = Integer.parseInt(coordinate.z);
-            coordinates.add(new SharedSuggestionProvider.TextCoordinates(Double.toString(x + 0.25D), coordinate.y, Double.toString(z + 0.25D)));
-            coordinates.add(new SharedSuggestionProvider.TextCoordinates(Double.toString(x + 0.25D), coordinate.y, Double.toString(z + 0.75D)));
-            coordinates.add(new SharedSuggestionProvider.TextCoordinates(Double.toString(x + 0.75D), coordinate.y, Double.toString(z + 0.25D)));
-            coordinates.add(new SharedSuggestionProvider.TextCoordinates(Double.toString(x + 0.75D), coordinate.y, Double.toString(z + 0.75D)));
+        	double x = Math.floor(Double.parseDouble(coordinate.x) * 2);
+        	double y = Math.floor(Double.parseDouble(coordinate.y));
+        	double z = Math.floor(Double.parseDouble(coordinate.z) * 2);
+        	x = (x / 2) + 0.25;
+        	z = (z / 2) + 0.25;
+            coordinates.add(new SharedSuggestionProvider.TextCoordinates(Double.toString(x), Double.toString(y), Double.toString(z)));
         } catch (NumberFormatException e) {
             coordinates.add(coordinate);
         }
     }
-
+    
 }

@@ -65,10 +65,14 @@ public class SetCheckersPieceCommand implements Command<CommandSourceStack> {
     }
 
     private void setPiece(CommandContext<CommandSourceStack> context, double subX, double subZ, PieceData<CheckersPiece> pieces) {
-        int square = ((int) (((subX / -0.25) + 1) / 2) & 1) | ((int) ((subZ / 0.25) + 1) & 2);
+    	subX = ((subX % 1) + 1) % 1;
+    	subZ = ((subZ % 1) + 1) % 1;
+    	int x = (int)(subX * 2);
+    	int z = (int)(subZ * 2);
+        int square = z * 2 + (1 - x);
         pieces.setPiece(square, new CheckersPiece(
-                context.getArgument("piece", CheckersPiece.Type.class),
-                context.getArgument("col", PieceColor.class)
+            context.getArgument("piece", CheckersPiece.Type.class),
+            context.getArgument("col", PieceColor.class)
         ));
     }
 
